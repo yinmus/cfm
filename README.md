@@ -25,6 +25,6 @@ ___
 
 - make help
 
-**Usage:**
+**[Usage](help.1)**
 
 - Alt + A help  
