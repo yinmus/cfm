@@ -19,47 +19,18 @@ char last_path[MAX_PATH];
 int show_hidden = 0;
 
 void help_view() {
-    char help_path[MAX_PATH];
-    snprintf(help_path, sizeof(help_path), "%s/Документы/.h/help.g", getenv("HOME")); 
-
-    FILE *file = fopen(help_path, "r");
-    if (!file) {
-        mvprintw(LINES - 2, 0, "Help file not found!");
-        refresh();
-        napms(2000);
-        return;
-    }
-
     def_prog_mode();
-    endwin();        
+    endwin();
 
-    clear();
-    printf("---(Press 'q' to exit)---\n");
-
-    char buffer[256];
-    while (fgets(buffer, sizeof(buffer), file)) {
-        printf("%s", buffer);
-    }
-
-    fclose(file);
-
-    printf("\n-----------------------\n");
-
-    char input[10];
-    while (1) {
-        printf(":");
-        if (fgets(input, sizeof(input), stdin)) {
-            if (strcmp(input, "q\n") == 0) {
-                break;
-            } else {
-                printf("Unknown command. Type 'q' to exit.\n");
-            }
-        }
-    }
+    char cmd[MAX_PATH];
+    snprintf(cmd, sizeof(cmd), "man %s/Документы/.h/help.1", getenv("HOME"));
+    system(cmd);
 
     reset_prog_mode();
     refresh();
 }
+
+
 
 int conf_ex() {
     curs_set(1); 
@@ -286,7 +257,7 @@ int main(int argc, char *argv[]) {
     if (argc > 1) {
         strncpy(path, argv[1], sizeof(path));
     } else {
-        to_home();
+        getcwd(path, sizeof(path));  // Используем текущую директорию
     }
 
     ls_files(path);
