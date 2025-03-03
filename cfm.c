@@ -15,8 +15,8 @@
 char files[MAX_FILES][MAX_PATH];
 int file_count = 0, selected = 0, offset = 0;
 char path[MAX_PATH];
-char last_path[MAX_PATH];
-int show_hidden = 0;
+char lpath[MAX_PATH];
+int s_hidden = 0;
 
 void help_view() {
     def_prog_mode();
@@ -53,7 +53,7 @@ void ls_files(const char *path) {
     file_count = 0;
     struct dirent *entry;
     while ((entry = readdir(dir)) != NULL && file_count < MAX_FILES) {
-        if (!show_hidden && entry->d_name[0] == '.') continue;
+        if (!s_hidden && entry->d_name[0] == '.') continue;
         strncpy(files[file_count++], entry->d_name, MAX_PATH);
     }
     closedir(dir);
@@ -130,7 +130,7 @@ void dUI() {
     }
 
     mvprintw(LINES - 2, 0, "──────────────────────────────────────────────────────────────");
-    mvprintw(LINES - 1, 0, "Files: %d | Hidden: %s", file_count, show_hidden ? "On" : "Off");
+    mvprintw(LINES - 1, 0, "Files: %d | Hidden: %s", file_count, s_hidden ? "On" : "Off");
     mvprintw(LINES, 0, "[K/J] Navigate | [Enter/L] Open | [H] Back | [Alt+U] Toggle Hidden | [T] New File | [D] Delete | [Shift+D] New Dir | [Q] Quit | [Alt+A] Open Help");
     refresh();
 }
@@ -261,7 +261,7 @@ int main(int argc, char *argv[]) {
     }
 
     ls_files(path);
-    strncpy(last_path, path, sizeof(last_path));
+    strncpy(lpath, path, sizeof(lpath));
 
     while (1) {
         dUI();
@@ -270,7 +270,7 @@ int main(int argc, char *argv[]) {
         if (ch == 27) { // Alt
             ch = getch();
             if (ch == 'u') {
-                show_hidden = !show_hidden;
+                s_hidden = !s_hidden;
                 ls_files(path);
             } else if (ch == 'a') { 
                 help_view(); 
@@ -298,7 +298,7 @@ int main(int argc, char *argv[]) {
                     snprintf(full_path, sizeof(full_path), "%s/%s", path, files[selected]);
 
                     if (is_dirY(full_path)) {
-                        strncpy(last_path, path, sizeof(last_path));
+                        strncpy(lpath, path, sizeof(lpath));
                         chdir(full_path);
                         getcwd(path, sizeof(path));
                         ls_files(path);
