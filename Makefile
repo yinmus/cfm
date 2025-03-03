@@ -20,7 +20,7 @@ install:
 
 uninstall:
 	sudo rm -f $(PREFIX)/$(BIN)
-	rm -rf "$(H_PATH)"
+	rm -"$(H_PATH)help.1"
 
 help:
 	@echo "  make        - Собрать $(BIN)"
