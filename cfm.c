@@ -274,6 +274,8 @@ int main(int argc, char *argv[]) {
                 ls_files(path);
             } else if (ch == 'a') { 
                 help_view(); 
+            } else if (ch == 'h') {
+                to_home();
             }
         } else {
             switch (ch) {
