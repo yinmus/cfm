@@ -30,8 +30,6 @@ void help_view() {
     refresh();
 }
 
-
-
 int conf_ex() {
     curs_set(1); 
     echo();      
@@ -257,7 +255,7 @@ int main(int argc, char *argv[]) {
     if (argc > 1) {
         strncpy(path, argv[1], sizeof(path));
     } else {
-        getcwd(path, sizeof(path));  // Используем текущую директорию
+        getcwd(path, sizeof(path));  
     }
 
     ls_files(path);
@@ -267,7 +265,7 @@ int main(int argc, char *argv[]) {
         dUI();
         int ch = getch();
         
-        if (ch == 27) { // Alt
+        if (ch == 27) { 
             ch = getch();
             if (ch == 'u') {
                 s_hidden = !s_hidden;
